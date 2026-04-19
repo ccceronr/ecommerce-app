@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { ShoppingCart, User, LogOut, LayoutDashboard } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useUser } from '@/hooks/useUser'
+import { useCart } from '@/hooks/useCart'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -18,6 +19,7 @@ import { toast } from 'sonner'
 export default function Navbar() {
   const router = useRouter()
   const { user, profile, isLoading, isAdmin } = useUser()
+  const totalItems = useCart((state) => state.totalItems())
 
   const handleLogout = async () => {
     try {
@@ -103,12 +105,14 @@ export default function Navbar() {
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/login">
-                  <Button variant="ghost" size="sm">
-                    Iniciar sesión
-                  </Button>
-                </Link>
-                <Link href="/register">
-                  <Button size="sm">Registrarse</Button>
+                  <Button variant="ghost" size="icon" aria-label="Carrito" className="relative">
+                    <ShoppingCart className="h-5 w-5" />
+                    {totalItems > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    {totalItems > 9 ? '9+' : totalItems}
+                    </span>
+                    )}
+                </Button>
                 </Link>
               </div>
             )}
