@@ -239,19 +239,15 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                         setDeleteOpen(open)
                         if (!open) setDeleteId(null)
                       }}>
-                        <DialogTrigger asChild>
-                          <Button
-                            size="icon"
-                            variant="ghost"
-                            className="h-8 w-8 text-red-500 hover:text-red-700"
-                            onClick={() => {
-                              setDeleteId(cat.id)
-                              setDeleteOpen(true)
-                            }}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </Button>
-                        </DialogTrigger>
+                        <DialogTrigger
+  className="inline-flex items-center justify-center h-8 w-8 rounded-md text-red-500 hover:text-red-700 hover:bg-accent"
+  onClick={() => {
+    setDeleteId(cat.id)
+    setDeleteOpen(true)
+  }}
+>
+  <Trash2 className="h-3 w-3" />
+</DialogTrigger>
                         <DialogContent>
                           <DialogHeader>
                             <DialogTitle>¿Eliminar categoría?</DialogTitle>

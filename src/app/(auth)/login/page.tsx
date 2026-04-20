@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,7 +14,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { toast } from 'sonner'
 import { loginSchema, type LoginFormData } from '@/lib/validations/auth'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get('redirectTo') || '/'
@@ -37,7 +38,6 @@ export default function LoginPage() {
       })
 
       if (error) {
-        // Mensaje genérico por seguridad — no revelar si el email existe
         toast.error('Credenciales incorrectas. Intenta de nuevo.')
         return
       }
@@ -95,11 +95,12 @@ export default function LoginPage() {
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </Button>
+
           <div className="text-center">
-  <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
-    ¿Olvidaste tu contraseña?
-  </Link>
-</div>
+            <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
         </form>
       </CardContent>
       <CardFooter className="justify-center">
@@ -111,5 +112,13 @@ export default function LoginPage() {
         </p>
       </CardFooter>
     </Card>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="w-full max-w-md animate-pulse bg-gray-100 rounded-lg h-96" />}>
+      <LoginForm />
+    </Suspense>
   )
 }

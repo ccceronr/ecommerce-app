@@ -49,12 +49,12 @@ export default function DeleteProductButton({ id, name }: DeleteProductButtonPro
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button variant="outline" size="sm" className="text-red-500 hover:text-red-700 hover:border-red-300">
-          <Trash2 className="h-3 w-3 mr-1" />
-          Eliminar
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+  className="inline-flex items-center justify-center px-3 h-8 text-xs rounded-md border border-input text-red-500 hover:text-red-700 hover:border-red-300 hover:bg-accent"
+>
+  <Trash2 className="h-3 w-3 mr-1" />
+  Eliminar
+</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>¿Eliminar producto?</DialogTitle>

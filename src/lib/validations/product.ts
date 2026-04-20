@@ -10,16 +10,16 @@ export const productSchema = z.object({
     .max(1000, 'La descripción es demasiado larga')
     .optional(),
   price: z
-    .number({ invalid_type_error: 'El precio debe ser un número' })
+    .number()
     .min(0, 'El precio no puede ser negativo'),
   category_id: z
     .string()
     .min(1, 'La categoría es requerida'),
   stock: z
-    .number({ invalid_type_error: 'El stock debe ser un número' })
+    .number()
     .int('El stock debe ser un número entero')
     .min(0, 'El stock no puede ser negativo'),
-  active: z.boolean().default(true),
+  active: z.boolean(),
 })
 
 export type ProductFormData = z.infer<typeof productSchema>

@@ -211,7 +211,7 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
             <Label>Categoría</Label>
             <Select
               defaultValue={product?.category_id || ''}
-              onValueChange={(value) => setValue('category_id', value)}
+              onValueChange={(value) => setValue('category_id', value ?? '')}
               disabled={isLoading}
             >
               <SelectTrigger>
