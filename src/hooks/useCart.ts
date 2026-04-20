@@ -4,6 +4,8 @@ import type { CartItem } from '@/types'
 
 interface CartStore {
   items: CartItem[]
+  _hasHydrated: boolean
+  setHasHydrated: (state: boolean) => void
   addItem: (item: CartItem) => void
   removeItem: (product_id: string) => void
   updateQuantity: (product_id: string, quantity: number) => void
@@ -16,13 +18,15 @@ export const useCart = create<CartStore>()(
   persist(
     (set, get) => ({
       items: [],
+      _hasHydrated: false,
+
+      setHasHydrated: (state) => set({ _hasHydrated: state }),
 
       addItem: (newItem) => {
         const items = get().items
         const existing = items.find((i) => i.product_id === newItem.product_id)
 
         if (existing) {
-          // Si ya existe, aumentar cantidad
           set({
             items: items.map((i) =>
               i.product_id === newItem.product_id
@@ -60,7 +64,10 @@ export const useCart = create<CartStore>()(
         get().items.reduce((sum, i) => sum + i.price * i.quantity, 0),
     }),
     {
-      name: 'cart-storage', // nombre en localStorage
+      name: 'cart-storage',
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true)
+      },
     }
   )
 )

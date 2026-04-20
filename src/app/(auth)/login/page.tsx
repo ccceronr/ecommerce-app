@@ -95,6 +95,11 @@ export default function LoginPage() {
           <Button type="submit" className="w-full" disabled={isLoading}>
             {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
           </Button>
+          <div className="text-center">
+  <Link href="/forgot-password" className="text-sm text-blue-600 hover:underline">
+    ¿Olvidaste tu contraseña?
+  </Link>
+</div>
         </form>
       </CardContent>
       <CardFooter className="justify-center">
