@@ -14,7 +14,6 @@ export default async function AdminLayout({
     redirect('/login?redirectTo=/admin/dashboard')
   }
 
-  // Verificar rol de admin
   const { data: profile } = await supabase
     .from('profiles')
     .select('role')
@@ -26,7 +25,7 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-background flex">
       <AdminSidebar />
       <main className="flex-1 p-8">
         {children}

@@ -12,8 +12,8 @@ export default async function AdminUsersPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Usuarios</h1>
-        <p className="text-gray-500 mt-1">
+        <h1 className="text-3xl font-bold text-foreground">Usuarios</h1>
+        <p className="text-muted-foreground mt-1">
           {users?.length || 0} usuarios registrados
         </p>
       </div>

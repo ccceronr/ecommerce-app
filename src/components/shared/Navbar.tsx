@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { toast } from 'sonner'
+import { ThemeToggle } from '@/components/shared/ThemeToggle'
 
 export default function Navbar() {
   const router = useRouter()
@@ -36,17 +37,19 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="border-b bg-white sticky top-0 z-50">
+    <nav className="border-b bg-background sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link href="/" className="font-bold text-xl text-gray-900 hover:text-gray-600 transition-colors">
+          <Link href="/" className="font-bold text-xl text-foreground hover:text-muted-foreground transition-colors">
             Ecommerce App
           </Link>
 
           {/* Acciones */}
           <div className="flex items-center gap-3">
+
+            <ThemeToggle />
 
             {/* Carrito — siempre visible, solo uno */}
             <Link href="/cart">
@@ -62,11 +65,11 @@ export default function Navbar() {
 
             {/* Usuario */}
             {isLoading ? (
-              <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
+              <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
             ) : user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent text-foreground"
                   aria-label="Menú de usuario"
                 >
                   <User className="h-5 w-5" />
@@ -76,7 +79,7 @@ export default function Navbar() {
                     <p className="text-sm font-medium truncate">
                       {profile?.full_name || 'Usuario'}
                     </p>
-                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => router.push('/orders')}>
@@ -94,7 +97,7 @@ export default function Navbar() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={handleLogout}
-                    className="text-red-600 cursor-pointer focus:text-red-600"
+                    className="text-destructive cursor-pointer focus:text-destructive"
                   >
                     <LogOut className="h-4 w-4 mr-2" />
                     Cerrar sesión

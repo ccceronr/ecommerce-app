@@ -37,7 +37,7 @@ export default function CartPage() {
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           Tu carrito está vacío
         </h2>
-        <p className="text-gray-500 mb-6">
+        <p className="text-muted-foreground mb-6">
           Agrega productos para continuar
         </p>
         <Button onClick={() => router.push('/')}>
@@ -49,7 +49,7 @@ export default function CartPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">
+      <h1 className="text-3xl font-bold text-foreground mb-8">
         Carrito ({totalItems()} {totalItems() === 1 ? 'item' : 'items'})
       </h1>
 
@@ -59,7 +59,7 @@ export default function CartPage() {
           {items.map((item) => (
             <div
               key={item.product_id}
-              className="bg-white rounded-lg border border-gray-200 p-4 flex gap-4"
+              className="bg-card rounded-lg border border-border p-4 flex gap-4"
             >
               {/* Imagen */}
               <div className="relative w-20 h-20 bg-gray-100 rounded-md flex-shrink-0">
@@ -80,8 +80,8 @@ export default function CartPage() {
 
               {/* Info */}
               <div className="flex-1">
-                <h3 className="font-medium text-gray-900">{item.name}</h3>
-                <p className="text-sm text-gray-500 mt-1">
+                <h3 className="font-medium text-foreground">{item.name}</h3>
+                <p className="text-sm text-muted-foreground mt-1">
                   {formattedPrice(item.price)} c/u
                 </p>
 
@@ -96,7 +96,7 @@ export default function CartPage() {
                   >
                     <Minus className="h-3 w-3" />
                   </Button>
-                  <span className="w-8 text-center text-sm font-medium">
+                  <span className="w-8 text-center text-sm font-medium text-foreground">
                     {item.quantity}
                   </span>
                   <Button
@@ -125,7 +125,7 @@ export default function CartPage() {
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
-                <p className="font-bold text-gray-900">
+                <p className="font-bold text-foreground">
                   {formattedPrice(item.price * item.quantity)}
                 </p>
               </div>
@@ -147,25 +147,25 @@ export default function CartPage() {
 
         {/* Resumen */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-lg border border-gray-200 p-6 sticky top-24">
-            <h2 className="text-lg font-bold text-gray-900 mb-4">
+          <div className="bg-card rounded-lg border border-border p-6 sticky top-24">
+            <h2 className="text-lg font-bold text-foreground mb-4">
               Resumen del pedido
             </h2>
 
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Subtotal ({totalItems()} items)</span>
+                <span className="text-muted-foreground">Subtotal ({totalItems()} items)</span>
                 <span>{formattedPrice(totalPrice())}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-gray-600">Envío</span>
+                <span className="text-muted-foreground">Envío</span>
                 <span className="text-green-600">Gratis</span>
               </div>
             </div>
 
             <Separator className="my-4" />
 
-            <div className="flex justify-between font-bold text-lg mb-6">
+            <div className="flex justify-between font-bold text-lg mb-6 text-foreground">
               <span>Total</span>
               <span>{formattedPrice(totalPrice())}</span>
             </div>

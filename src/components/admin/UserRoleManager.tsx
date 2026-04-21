@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import {
   Select,
   SelectContent,
@@ -50,24 +49,24 @@ export default function UserRoleManager({ initialUsers }: UserRoleManagerProps) 
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+    <div className="bg-card rounded-lg border border-border overflow-hidden">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-gray-200 bg-gray-50">
-            <th className="text-left py-3 px-4 font-medium text-gray-500">Usuario</th>
-            <th className="text-left py-3 px-4 font-medium text-gray-500">Rol actual</th>
-            <th className="text-left py-3 px-4 font-medium text-gray-500">Cambiar rol</th>
-            <th className="text-left py-3 px-4 font-medium text-gray-500">Registro</th>
+          <tr className="border-b border-border bg-muted/50">
+            <th className="text-left py-3 px-4 font-medium text-muted-foreground">Usuario</th>
+            <th className="text-left py-3 px-4 font-medium text-muted-foreground">Rol actual</th>
+            <th className="text-left py-3 px-4 font-medium text-muted-foreground">Cambiar rol</th>
+            <th className="text-left py-3 px-4 font-medium text-muted-foreground">Registro</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
-            <tr key={user.id} className="border-b border-gray-100 hover:bg-gray-50">
+            <tr key={user.id} className="border-b border-border hover:bg-muted/50">
               <td className="py-3 px-4">
-                <p className="font-medium text-gray-900">
+                <p className="font-medium text-foreground">
                   {user.full_name || 'Sin nombre'}
                 </p>
-                <p className="text-xs text-gray-500 font-mono mt-1">
+                <p className="text-xs text-muted-foreground font-mono mt-1">
                   {user.id.slice(0, 8)}...
                 </p>
               </td>
@@ -94,11 +93,11 @@ export default function UserRoleManager({ initialUsers }: UserRoleManagerProps) 
                     </SelectContent>
                   </Select>
                   {loadingId === user.id && (
-                    <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-border border-t-foreground rounded-full animate-spin" />
                   )}
                 </div>
               </td>
-              <td className="py-3 px-4 text-gray-500">
+              <td className="py-3 px-4 text-muted-foreground">
                 {new Date(user.created_at).toLocaleDateString('es-CO')}
               </td>
             </tr>
@@ -108,7 +107,7 @@ export default function UserRoleManager({ initialUsers }: UserRoleManagerProps) 
 
       {users.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-gray-500">No hay usuarios registrados</p>
+          <p className="text-muted-foreground">No hay usuarios registrados</p>
         </div>
       )}
     </div>

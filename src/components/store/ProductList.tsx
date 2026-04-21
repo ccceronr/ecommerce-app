@@ -77,7 +77,7 @@ export default function ProductList() {
       {/* Filtros */}
       <div className="mb-6 flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             placeholder="Buscar productos..."
             value={search}
@@ -111,7 +111,7 @@ export default function ProductList() {
       {isLoading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <div key={i} className="bg-card rounded-lg border border-border overflow-hidden">
               <Skeleton className="h-48 w-full" />
               <div className="p-4 space-y-2">
                 <Skeleton className="h-4 w-20" />
@@ -125,7 +125,7 @@ export default function ProductList() {
       ) : products.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-4xl mb-4">🔍</p>
-          <p className="text-gray-500 text-lg">No se encontraron productos</p>
+          <p className="text-muted-foreground text-lg">No se encontraron productos</p>
           {(search || selectedCategory) && (
             <Button
               variant="outline"
@@ -157,7 +157,7 @@ export default function ProductList() {
               >
                 Anterior
               </Button>
-              <span className="flex items-center px-4 text-sm text-gray-600">
+              <span className="flex items-center px-4 text-sm text-muted-foreground">
                 Página {page} de {totalPages}
               </span>
               <Button

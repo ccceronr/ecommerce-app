@@ -53,7 +53,6 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
     resolver: zodResolver(categorySchema),
   })
 
-  // Generar slug desde el nombre
   const generateSlug = (name: string) =>
     name
       .toLowerCase()
@@ -153,8 +152,8 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       {/* Formulario de nueva categoría */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">Nueva categoría</h2>
+      <div className="bg-card rounded-lg border border-border p-6">
+        <h2 className="text-lg font-bold text-foreground mb-4">Nueva categoría</h2>
         <form onSubmit={handleSubmit(handleCreate)} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Nombre</Label>
@@ -176,19 +175,19 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
       </div>
 
       {/* Lista de categorías */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
-        <h2 className="text-lg font-bold text-gray-900 mb-4">
+      <div className="bg-card rounded-lg border border-border p-6">
+        <h2 className="text-lg font-bold text-foreground mb-4">
           Categorías existentes
         </h2>
 
         {categories.length === 0 ? (
-          <p className="text-gray-500 text-sm">No hay categorías aún</p>
+          <p className="text-muted-foreground text-sm">No hay categorías aún</p>
         ) : (
           <div className="space-y-2">
             {categories.map((cat) => (
               <div
                 key={cat.id}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-md"
+                className="flex items-center justify-between p-3 bg-muted/50 rounded-md"
               >
                 {editingId === cat.id ? (
                   <div className="flex items-center gap-2 flex-1">
@@ -220,8 +219,8 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                 ) : (
                   <>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{cat.name}</p>
-                      <p className="text-xs text-gray-500">{cat.slug}</p>
+                      <p className="text-sm font-medium text-foreground">{cat.name}</p>
+                      <p className="text-xs text-muted-foreground">{cat.slug}</p>
                     </div>
                     <div className="flex items-center gap-1">
                       <Button
@@ -240,14 +239,14 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                         if (!open) setDeleteId(null)
                       }}>
                         <DialogTrigger
-  className="inline-flex items-center justify-center h-8 w-8 rounded-md text-red-500 hover:text-red-700 hover:bg-accent"
-  onClick={() => {
-    setDeleteId(cat.id)
-    setDeleteOpen(true)
-  }}
->
-  <Trash2 className="h-3 w-3" />
-</DialogTrigger>
+                          className="inline-flex items-center justify-center h-8 w-8 rounded-md text-destructive hover:text-destructive hover:bg-accent"
+                          onClick={() => {
+                            setDeleteId(cat.id)
+                            setDeleteOpen(true)
+                          }}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </DialogTrigger>
                         <DialogContent>
                           <DialogHeader>
                             <DialogTitle>¿Eliminar categoría?</DialogTitle>

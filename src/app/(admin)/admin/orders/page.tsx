@@ -1,11 +1,10 @@
 import { createClient } from '@/lib/supabase/server'
-import { Badge } from '@/components/ui/badge'
 import Link from 'next/link'
 
 const statusLabels = {
-  pending: { label: 'Pendiente', className: 'bg-yellow-100 text-yellow-800' },
-  paid: { label: 'Pagado', className: 'bg-green-100 text-green-800' },
-  cancelled: { label: 'Cancelado', className: 'bg-red-100 text-red-800' },
+  pending: { label: 'Pendiente', className: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400' },
+  paid: { label: 'Pagado', className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' },
+  cancelled: { label: 'Cancelado', className: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400' },
 }
 
 export default async function AdminOrdersPage() {
@@ -30,42 +29,42 @@ export default async function AdminOrdersPage() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Ventas</h1>
-        <p className="text-gray-500 mt-1">
+        <h1 className="text-3xl font-bold text-foreground">Ventas</h1>
+        <p className="text-muted-foreground mt-1">
           {orders?.length || 0} órdenes en total —{' '}
-          <span className="font-medium text-green-600">
+          <span className="font-medium text-green-600 dark:text-green-400">
             {formattedPrice(totalRevenue)} en ingresos
           </span>
         </p>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      <div className="bg-card rounded-lg border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-200 bg-gray-50">
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Orden</th>
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Cliente</th>
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Items</th>
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Total</th>
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Estado</th>
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Fecha</th>
+            <tr className="border-b border-border bg-muted/50">
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Orden</th>
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Cliente</th>
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Items</th>
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Total</th>
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Estado</th>
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Fecha</th>
             </tr>
           </thead>
           <tbody>
             {orders?.map((order: any) => {
               const status = statusLabels[order.status as keyof typeof statusLabels]
               return (
-                <tr key={order.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="py-3 px-4 font-mono font-medium">
+                <tr key={order.id} className="border-b border-border hover:bg-muted/50">
+                  <td className="py-3 px-4 font-mono font-medium text-foreground">
                     #{order.id.slice(0, 8).toUpperCase()}
                   </td>
-                  <td className="py-3 px-4">
+                  <td className="py-3 px-4 text-foreground">
                     {order.profiles?.full_name || 'Usuario'}
                   </td>
-                  <td className="py-3 px-4 text-gray-600">
+                  <td className="py-3 px-4 text-muted-foreground">
                     {order.order_items?.length || 0} items
                   </td>
-                  <td className="py-3 px-4 font-medium">
+                  <td className="py-3 px-4 font-medium text-foreground">
                     {formattedPrice(order.total)}
                   </td>
                   <td className="py-3 px-4">
@@ -73,7 +72,7 @@ export default async function AdminOrdersPage() {
                       {status.label}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-gray-500">
+                  <td className="py-3 px-4 text-muted-foreground">
                     {new Date(order.created_at).toLocaleDateString('es-CO')}
                   </td>
                 </tr>
@@ -84,7 +83,7 @@ export default async function AdminOrdersPage() {
 
         {(!orders || orders.length === 0) && (
           <div className="text-center py-16">
-            <p className="text-gray-500">No hay órdenes aún</p>
+            <p className="text-muted-foreground">No hay órdenes aún</p>
           </div>
         )}
       </div>

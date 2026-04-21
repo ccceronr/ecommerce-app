@@ -24,8 +24,8 @@ export default async function AdminProductsPage() {
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Productos</h1>
-          <p className="text-gray-500 mt-1">{products?.length || 0} productos en total</p>
+          <h1 className="text-3xl font-bold text-foreground">Productos</h1>
+          <p className="text-muted-foreground mt-1">{products?.length || 0} productos en total</p>
         </div>
         <Link href="/admin/products/new">
           <Button>
@@ -35,35 +35,35 @@ export default async function AdminProductsPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+      <div className="bg-card rounded-lg border border-border overflow-hidden">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-200 bg-gray-50">
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Producto</th>
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Categoría</th>
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Precio</th>
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Stock</th>
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Estado</th>
-              <th className="text-left py-3 px-4 font-medium text-gray-500">Acciones</th>
+            <tr className="border-b border-border bg-muted/50">
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Producto</th>
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Categoría</th>
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Precio</th>
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Stock</th>
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Estado</th>
+              <th className="text-left py-3 px-4 font-medium text-muted-foreground">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {products?.map((product) => (
-              <tr key={product.id} className="border-b border-gray-100 hover:bg-gray-50">
+              <tr key={product.id} className="border-b border-border hover:bg-muted/50">
                 <td className="py-3 px-4">
-                  <p className="font-medium text-gray-900">{product.name}</p>
-                  <p className="text-gray-500 text-xs mt-1 line-clamp-1">
+                  <p className="font-medium text-foreground">{product.name}</p>
+                  <p className="text-muted-foreground text-xs mt-1 line-clamp-1">
                     {product.description}
                   </p>
                 </td>
-                <td className="py-3 px-4 text-gray-600">
+                <td className="py-3 px-4 text-muted-foreground">
                   {product.category?.name || '—'}
                 </td>
-                <td className="py-3 px-4 font-medium">
+                <td className="py-3 px-4 font-medium text-foreground">
                   {formattedPrice(product.price)}
                 </td>
                 <td className="py-3 px-4">
-                  <span className={product.stock === 0 ? 'text-red-500' : 'text-gray-600'}>
+                  <span className={product.stock === 0 ? 'text-red-500' : 'text-muted-foreground'}>
                     {product.stock}
                   </span>
                 </td>
@@ -90,8 +90,8 @@ export default async function AdminProductsPage() {
 
         {(!products || products.length === 0) && (
           <div className="text-center py-16">
-            <p className="text-gray-500">No hay productos aún</p>
-            <Link href="/admin/products/new" className="text-blue-600 hover:underline text-sm mt-2 block">
+            <p className="text-muted-foreground">No hay productos aún</p>
+            <Link href="/admin/products/new" className="text-primary hover:underline text-sm mt-2 block">
               Crear primer producto
             </Link>
           </div>

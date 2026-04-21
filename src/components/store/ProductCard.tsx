@@ -45,10 +45,10 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div
       onClick={() => router.push(`/products/${product.id}`)}
-      className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-shadow cursor-pointer group"
+      className="bg-card text-card-foreground rounded-lg border border-border overflow-hidden hover:shadow-md transition-shadow cursor-pointer group"
     >
       {/* Imagen */}
-      <div className="relative h-48 bg-gray-100">
+      <div className="relative h-48 bg-muted">
         {product.images && product.images.length > 0 ? (
           <Image
             src={product.images[0]}
@@ -58,7 +58,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
-          <div className="h-full flex items-center justify-center text-gray-400">
+          <div className="h-full flex items-center justify-center text-muted-foreground">
             <span className="text-4xl">📦</span>
           </div>
         )}
@@ -78,18 +78,18 @@ export default function ProductCard({ product }: ProductCardProps) {
           </Badge>
         )}
 
-        <h3 className="font-medium text-gray-900 mb-1 line-clamp-2">
+        <h3 className="font-medium text-foreground mb-1 line-clamp-2">
           {product.name}
         </h3>
 
         {product.description && (
-          <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
             {product.description}
           </p>
         )}
 
         <div className="flex items-center justify-between mt-auto">
-          <span className="font-bold text-lg text-gray-900">
+          <span className="font-bold text-lg text-foreground">
             {formattedPrice}
           </span>
 
