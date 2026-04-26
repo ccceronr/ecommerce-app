@@ -34,15 +34,15 @@ export default async function OrdersPage() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Mis órdenes</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-8">Mis órdenes</h1>
 
       {!orders || orders.length === 0 ? (
         <div className="text-center py-16">
           <p className="text-4xl mb-4">📦</p>
-          <p className="text-gray-500 text-lg mb-4">No tienes órdenes aún</p>
+          <p className="text-muted-foreground text-lg mb-4">No tienes órdenes aún</p>
           <Link
             href="/"
-            className="text-blue-600 hover:underline"
+            className="text-primary hover:underline"
           >
             Ver productos
           </Link>
@@ -55,17 +55,17 @@ export default async function OrdersPage() {
               <Link
                 key={order.id}
                 href={`/orders/${order.id}`}
-                className="block bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                className="block bg-card rounded-lg border border-border p-6 hover:bg-accent transition-colors"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-500 mb-1">
+                    <p className="text-sm text-muted-foreground mb-1">
                       Orden #{order.id.slice(0, 8).toUpperCase()}
                     </p>
-                    <p className="font-bold text-lg">
+                    <p className="font-bold text-lg text-foreground">
                       {formattedPrice(order.total)}
                     </p>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-muted-foreground mt-1">
                       {new Date(order.created_at).toLocaleDateString('es-CO', {
                         year: 'numeric',
                         month: 'long',

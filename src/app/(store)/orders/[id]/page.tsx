@@ -51,22 +51,22 @@ export default async function OrderDetailPage({
         <Link href="/orders">
           <Button variant="outline" size="sm">← Volver</Button>
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900">
+        <h1 className="text-2xl font-bold text-foreground">
           Orden #{order.id.slice(0, 8).toUpperCase()}
         </h1>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+      <div className="bg-card rounded-lg border border-border p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <p className="text-sm text-gray-500">Estado</p>
+            <p className="text-sm text-muted-foreground">Estado</p>
             <Badge variant={status.variant} className="mt-1">
               {status.label}
             </Badge>
           </div>
           <div className="text-right">
-            <p className="text-sm text-gray-500">Fecha</p>
-            <p className="font-medium">
+            <p className="text-sm text-muted-foreground">Fecha</p>
+            <p className="font-medium text-foreground">
               {new Date(order.created_at).toLocaleDateString('es-CO', {
                 year: 'numeric',
                 month: 'long',
@@ -78,14 +78,14 @@ export default async function OrderDetailPage({
 
         <Separator className="my-4" />
 
-        <h2 className="font-bold mb-4">Productos</h2>
+        <h2 className="font-bold mb-4 text-foreground">Productos</h2>
         <div className="space-y-3">
           {order.order_items?.map((item: any) => (
             <div key={item.id} className="flex justify-between text-sm">
-              <span className="text-gray-600">
+              <span className="text-muted-foreground">
                 {item.product?.name || 'Producto eliminado'} x{item.quantity}
               </span>
-              <span className="font-medium">
+              <span className="font-medium text-foreground">
                 {formattedPrice(item.unit_price * item.quantity)}
               </span>
             </div>
@@ -94,7 +94,7 @@ export default async function OrderDetailPage({
 
         <Separator className="my-4" />
 
-        <div className="flex justify-between font-bold text-lg">
+        <div className="flex justify-between font-bold text-lg text-foreground">
           <span>Total</span>
           <span>{formattedPrice(order.total)}</span>
         </div>
