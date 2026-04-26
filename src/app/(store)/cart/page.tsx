@@ -33,8 +33,8 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="text-center py-20">
-        <ShoppingBag className="h-16 w-16 mx-auto text-gray-300 mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <ShoppingBag className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
+        <h2 className="text-2xl font-bold text-foreground mb-2">
           Tu carrito está vacío
         </h2>
         <p className="text-muted-foreground mb-6">
@@ -62,7 +62,7 @@ export default function CartPage() {
               className="bg-card rounded-lg border border-border p-4 flex gap-4"
             >
               {/* Imagen */}
-              <div className="relative w-20 h-20 bg-gray-100 rounded-md flex-shrink-0">
+              <div className="relative w-20 h-20 bg-muted rounded-md flex-shrink-0">
                 {item.image ? (
                   <Image
                     src={item.image}
@@ -116,7 +116,7 @@ export default function CartPage() {
                 <Button
                   variant="ghost"
                   size="icon"
-                  className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                  className="text-red-500 hover:text-red-700 hover:bg-red-500/10 dark:hover:text-red-400"
                   onClick={() => {
                     removeItem(item.product_id)
                     toast.success('Producto eliminado del carrito')
@@ -134,7 +134,7 @@ export default function CartPage() {
 
           <Button
             variant="outline"
-            className="text-red-500 hover:text-red-700"
+            className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
             onClick={() => {
               clearCart()
               toast.success('Carrito vaciado')
@@ -155,11 +155,11 @@ export default function CartPage() {
             <div className="space-y-2 mb-4">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Subtotal ({totalItems()} items)</span>
-                <span>{formattedPrice(totalPrice())}</span>
+                <span className="text-foreground">{formattedPrice(totalPrice())}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Envío</span>
-                <span className="text-green-600">Gratis</span>
+                <span className="text-green-600 dark:text-green-400">Gratis</span>
               </div>
             </div>
 

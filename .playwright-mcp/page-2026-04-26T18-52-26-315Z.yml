@@ -1,0 +1,27 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e194]:
+    - generic [ref=e195]:
+      - generic [ref=e196]: Iniciar sesión
+      - generic [ref=e197]: Ingresa tus credenciales para acceder a tu cuenta
+    - generic [ref=e199]:
+      - generic [ref=e200]:
+        - generic [ref=e201]: Email
+        - textbox "Email" [ref=e202]:
+          - /placeholder: tu@email.com
+      - generic [ref=e203]:
+        - generic [ref=e204]: Contraseña
+        - textbox "Contraseña" [ref=e205]:
+          - /placeholder: ••••••••
+      - button "Iniciar sesión" [ref=e206]
+      - link "¿Olvidaste tu contraseña?" [ref=e208] [cursor=pointer]:
+        - /url: /forgot-password
+    - paragraph [ref=e210]:
+      - text: ¿No tienes cuenta?
+      - link "Regístrate" [ref=e211] [cursor=pointer]:
+        - /url: /register
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e212]:
+        - img [ref=e214]
+        - generic [ref=e219]: Debes iniciar sesión para continuar
+  - alert [ref=e149]

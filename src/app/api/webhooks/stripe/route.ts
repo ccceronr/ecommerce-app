@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { stripe } from '@/lib/stripe/client'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { sendOrderConfirmationEmail } from '@/lib/resend/emails'
 import Stripe from 'stripe'
 
 export async function POST(request: NextRequest) {
@@ -40,6 +41,7 @@ export async function POST(request: NextRequest) {
   if (event.type === 'payment_intent.succeeded') {
     const paymentIntent = event.data.object as Stripe.PaymentIntent
     const orderId = paymentIntent.metadata.order_id
+    const userId = paymentIntent.metadata.user_id
 
     if (!orderId) {
       return NextResponse.json(
@@ -49,20 +51,54 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const supabase = await createClient()
+      const supabase = createAdminClient()
 
       // Actualizar estado de la orden a paid
-      const { error } = await supabase
+      const { error: updateError } = await supabase
         .from('orders')
         .update({ status: 'paid' })
         .eq('id', orderId)
 
-      if (error) {
-        console.error('Error actualizando orden:', error)
+      if (updateError) {
+        console.error('Error actualizando orden:', updateError)
         return NextResponse.json(
           { error: 'Error al actualizar la orden' },
           { status: 500 }
         )
+      }
+
+      // Obtener datos de la orden para el email
+      const { data: order } = await supabase
+        .from('orders')
+        .select('*, order_items(name:products(name), quantity, unit_price)')
+        .eq('id', orderId)
+        .single()
+
+      // Obtener datos del usuario
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', userId)
+        .single()
+
+      // Obtener email del usuario
+      const { data: { user } } = await supabase.auth.admin.getUserById(userId)
+
+      if (order && user?.email) {
+        const orderItems = order.order_items.map((item: any) => ({
+          name: item.name?.name || 'Producto',
+          quantity: item.quantity,
+          unit_price: item.unit_price,
+        }))
+
+        // Enviar email de confirmación
+        await sendOrderConfirmationEmail({
+          to: user.email,
+          customerName: profile?.full_name || 'Cliente',
+          orderId: order.id,
+          orderItems,
+          total: order.total,
+        })
       }
     } catch (error) {
       console.error('Error en webhook:', error)
@@ -79,7 +115,7 @@ export async function POST(request: NextRequest) {
     const orderId = paymentIntent.metadata.order_id
 
     if (orderId) {
-      const supabase = await createClient()
+      const supabase = createAdminClient()
       await supabase
         .from('orders')
         .update({ status: 'cancelled' })

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTheme } from 'next-themes'
 import { loadStripe } from '@stripe/stripe-js'
 import {
   Elements,
@@ -19,7 +20,6 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
 )
 
-// Formulario de pago interno
 function CheckoutForm({ orderId }: { orderId: string }) {
   const stripe = useStripe()
   const elements = useElements()
@@ -68,16 +68,16 @@ function CheckoutForm({ orderId }: { orderId: string }) {
       >
         {isLoading ? 'Procesando pago...' : 'Pagar ahora'}
       </Button>
-      <p className="text-xs text-center text-gray-500">
+      <p className="text-xs text-center text-muted-foreground">
         Pago seguro procesado por Stripe. Usa la tarjeta de prueba: 4242 4242 4242 4242
       </p>
     </form>
   )
 }
 
-// Página principal de checkout
 export default function CheckoutPage() {
   const router = useRouter()
+  const { resolvedTheme } = useTheme()
   const { user, isLoading: userLoading } = useUser()
   const { items, totalPrice, totalItems } = useCart()
   const [clientSecret, setClientSecret] = useState('')
@@ -91,21 +91,18 @@ export default function CheckoutPage() {
       minimumFractionDigits: 0,
     }).format(price)
 
-  // Redirigir si no está autenticado
   useEffect(() => {
     if (!userLoading && !user) {
       router.push('/login?redirectTo=/checkout')
     }
   }, [user, userLoading, router])
 
-  // Redirigir si el carrito está vacío
   useEffect(() => {
     if (!userLoading && items.length === 0) {
       router.push('/cart')
     }
   }, [items, userLoading, router])
 
-  // Crear Payment Intent al cargar
   useEffect(() => {
     if (!user || items.length === 0) return
 
@@ -143,8 +140,8 @@ export default function CheckoutPage() {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-gray-300 border-t-gray-900 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-500">Preparando tu orden...</p>
+          <div className="w-8 h-8 border-2 border-border border-t-foreground rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Preparando tu orden...</p>
         </div>
       </div>
     )
@@ -154,17 +151,19 @@ export default function CheckoutPage() {
 
   return (
     <div className="max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Checkout</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-8">Checkout</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Formulario de pago */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-bold mb-6">Información de pago</h2>
+        <div className="bg-card rounded-lg border border-border p-6">
+          <h2 className="text-lg font-bold text-foreground mb-6">Información de pago</h2>
           <Elements
             stripe={stripePromise}
             options={{
               clientSecret,
-              appearance: { theme: 'stripe' },
+              appearance: {
+                theme: resolvedTheme === 'dark' ? 'night' : 'stripe',
+              },
             }}
           >
             <CheckoutForm orderId={orderId} />
@@ -172,16 +171,16 @@ export default function CheckoutPage() {
         </div>
 
         {/* Resumen del pedido */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6 h-fit">
-          <h2 className="text-lg font-bold mb-4">Resumen del pedido</h2>
+        <div className="bg-card rounded-lg border border-border p-6 h-fit">
+          <h2 className="text-lg font-bold text-foreground mb-4">Resumen del pedido</h2>
 
           <div className="space-y-3 mb-4">
             {items.map((item) => (
               <div key={item.product_id} className="flex justify-between text-sm">
-                <span className="text-gray-600">
+                <span className="text-muted-foreground">
                   {item.name} x{item.quantity}
                 </span>
-                <span className="font-medium">
+                <span className="font-medium text-foreground">
                   {formattedPrice(item.price * item.quantity)}
                 </span>
               </div>
@@ -191,17 +190,17 @@ export default function CheckoutPage() {
           <Separator className="my-4" />
 
           <div className="flex justify-between text-sm mb-2">
-            <span className="text-gray-600">Subtotal ({totalItems()} items)</span>
-            <span>{formattedPrice(totalPrice())}</span>
+            <span className="text-muted-foreground">Subtotal ({totalItems()} items)</span>
+            <span className="text-foreground">{formattedPrice(totalPrice())}</span>
           </div>
           <div className="flex justify-between text-sm mb-4">
-            <span className="text-gray-600">Envío</span>
-            <span className="text-green-600">Gratis</span>
+            <span className="text-muted-foreground">Envío</span>
+            <span className="text-green-600 dark:text-green-400">Gratis</span>
           </div>
 
           <Separator className="my-4" />
 
-          <div className="flex justify-between font-bold text-lg">
+          <div className="flex justify-between font-bold text-lg text-foreground">
             <span>Total</span>
             <span>{formattedPrice(totalPrice())}</span>
           </div>
