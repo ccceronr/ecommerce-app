@@ -68,13 +68,11 @@ export async function POST(request: NextRequest) {
       }
 
       // Obtener datos de la orden para el email
-      const { data: order, error: orderError } = await supabase
+      const { data: order } = await supabase
         .from('orders')
         .select('*, order_items(name:products(name), quantity, unit_price)')
         .eq('id', orderId)
         .single()
-
-      console.log('[webhook] order:', JSON.stringify(order), 'error:', orderError)
 
       // Obtener datos del usuario
       const { data: profile } = await supabase
@@ -84,9 +82,7 @@ export async function POST(request: NextRequest) {
         .single()
 
       // Obtener email del usuario
-      const { data: userData, error: userError } = await supabase.auth.admin.getUserById(userId)
-
-      console.log('[webhook] user email:', userData?.user?.email, 'error:', userError)
+      const { data: userData } = await supabase.auth.admin.getUserById(userId)
 
       if (order && userData?.user?.email) {
         const orderItems = order.order_items.map((item: any) => ({
@@ -95,17 +91,13 @@ export async function POST(request: NextRequest) {
           unit_price: item.unit_price,
         }))
 
-        const emailResult = await sendOrderConfirmationEmail({
+        await sendOrderConfirmationEmail({
           to: userData.user.email,
           customerName: profile?.full_name || 'Cliente',
           orderId: order.id,
           orderItems,
           total: order.total,
         })
-
-        console.log('[webhook] email result:', JSON.stringify(emailResult))
-      } else {
-        console.log('[webhook] condición falsa — order:', !!order, 'email:', userData?.user?.email)
       }
     } catch (error) {
       console.error('Error en webhook:', error)
