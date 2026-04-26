@@ -1,8 +1,0 @@
-[    1601ms] [LOG] 1. loadUser iniciado @ https://ecommerce-app-r467.vercel.app/_next/static/chunks/0evqi2zv7p1fq.js:0
-[    1640ms] [LOG] 2. SESSION: null null @ https://ecommerce-app-r467.vercel.app/_next/static/chunks/0evqi2zv7p1fq.js:0
-[    1640ms] [LOG] 3. isLoading false @ https://ecommerce-app-r467.vercel.app/_next/static/chunks/0evqi2zv7p1fq.js:0
-[    1647ms] [LOG] 8. onAuthStateChange: INITIAL_SESSION null @ https://ecommerce-app-r467.vercel.app/_next/static/chunks/0evqi2zv7p1fq.js:0
-[  122852ms] [LOG] 1. loadUser iniciado @ https://ecommerce-app-r467.vercel.app/_next/static/chunks/0evqi2zv7p1fq.js:0
-[  122855ms] [LOG] 2. SESSION: null null @ https://ecommerce-app-r467.vercel.app/_next/static/chunks/0evqi2zv7p1fq.js:0
-[  122855ms] [LOG] 3. isLoading false @ https://ecommerce-app-r467.vercel.app/_next/static/chunks/0evqi2zv7p1fq.js:0
-[  122857ms] [LOG] 8. onAuthStateChange: INITIAL_SESSION null @ https://ecommerce-app-r467.vercel.app/_next/static/chunks/0evqi2zv7p1fq.js:0
