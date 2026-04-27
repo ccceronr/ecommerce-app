@@ -69,21 +69,22 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
 
     setUploadingImage(true)
     try {
-      const supabase = createClient()
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Date.now()}-${Math.random().toString(36).slice(2)}.${fileExt}`
+      const formData = new FormData()
+      formData.append('file', file)
 
-      const { error: uploadError } = await supabase.storage
-        .from('products')
-        .upload(fileName, file)
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      })
 
-      if (uploadError) throw uploadError
+      const data = await res.json()
 
-      const { data: { publicUrl } } = supabase.storage
-        .from('products')
-        .getPublicUrl(fileName)
+      if (!res.ok) {
+        toast.error(data.error || 'Error al subir la imagen')
+        return
+      }
 
-      setImages((prev) => [...prev, publicUrl])
+      setImages((prev) => [...prev, data.url])
       toast.success('Imagen subida correctamente')
     } catch {
       toast.error('Error al subir la imagen')
@@ -94,10 +95,13 @@ export default function ProductForm({ categories, product }: ProductFormProps) {
 
   const handleRemoveImage = async (url: string) => {
     try {
-      const supabase = createClient()
       const fileName = url.split('/').pop()
       if (fileName) {
-        await supabase.storage.from('products').remove([fileName])
+        await fetch('/api/admin/upload', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fileName }),
+        })
       }
       setImages((prev) => prev.filter((img) => img !== url))
       toast.success('Imagen eliminada')
