@@ -41,23 +41,23 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
     <div className="space-y-4">
       {/* Selector de cantidad */}
       <div className="flex items-center gap-3">
-        <span className="text-sm text-gray-500">Cantidad:</span>
+        <span className="text-sm text-muted-foreground font-medium">Cantidad:</span>
         <div className="flex items-center gap-2">
           <Button
             variant="outline"
             size="icon"
-            className="h-8 w-8"
+            className="h-8 w-8 rounded-full"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             disabled={quantity <= 1 || product.stock === 0}
             aria-label="Disminuir cantidad"
           >
             <Minus className="h-3 w-3" />
           </Button>
-          <span className="w-8 text-center font-medium">{quantity}</span>
+          <span className="w-8 text-center font-bold text-foreground">{quantity}</span>
           <Button
             variant="outline"
             size="icon"
-            className="h-8 w-8"
+            className="h-8 w-8 rounded-full"
             onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
             disabled={quantity >= product.stock || product.stock === 0}
             aria-label="Aumentar cantidad"
@@ -70,11 +70,11 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
       {/* Botón agregar al carrito */}
       <Button
         size="lg"
-        className="w-full"
+        className="w-full font-semibold gap-2"
         onClick={handleAddToCart}
         disabled={product.stock === 0}
       >
-        <ShoppingCart className="h-5 w-5 mr-2" />
+        <ShoppingCart className="h-5 w-5" />
         {product.stock === 0 ? 'Sin stock' : 'Agregar al carrito'}
       </Button>
     </div>

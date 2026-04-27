@@ -64,9 +64,9 @@ export default function RegisterPage() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Crear cuenta</CardTitle>
+    <Card className="shadow-lg border-t-2 border-t-primary">
+      <CardHeader className="space-y-1 pb-4">
+        <CardTitle className="text-2xl">Crear cuenta</CardTitle>
         <CardDescription>
           Ingresa tus datos para registrarte
         </CardDescription>
@@ -160,15 +160,20 @@ export default function RegisterPage() {
             )}
           </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Creando cuenta...' : 'Crear cuenta'}
+          <Button type="submit" className="w-full font-semibold" size="lg" disabled={isLoading}>
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                Creando cuenta...
+              </span>
+            ) : 'Crear cuenta'}
           </Button>
         </form>
       </CardContent>
-      <CardFooter className="justify-center">
+      <CardFooter className="justify-center pt-2 pb-6">
         <p className="text-sm text-muted-foreground">
           ¿Ya tienes cuenta?{' '}
-          <Link href="/login" className="text-primary hover:underline">
+          <Link href="/login" className="text-primary font-medium hover:underline transition-colors">
             Inicia sesión
           </Link>
         </p>

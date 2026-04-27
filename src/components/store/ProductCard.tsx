@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { ShoppingCart } from 'lucide-react'
+import { ShoppingCart, Package } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { useCart } from '@/hooks/useCart'
@@ -45,27 +45,31 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div
       onClick={() => router.push(`/products/${product.id}`)}
-      className="bg-card text-card-foreground rounded-lg border border-border overflow-hidden hover:shadow-md transition-shadow cursor-pointer group"
+      className="bg-card text-card-foreground rounded-xl border border-border overflow-hidden hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-0.5 hover:border-primary/25 transition-all duration-300 cursor-pointer group"
     >
       {/* Imagen */}
-      <div className="relative h-48 bg-muted">
+      <div className="relative h-56 bg-muted overflow-hidden">
         {product.images && product.images.length > 0 ? (
-          <Image
-            src={product.images[0]}
-            alt={product.name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          />
+          <>
+            <Image
+              src={product.images[0]}
+              alt={product.name}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-500"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+            <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </>
         ) : (
-          <div className="h-full flex items-center justify-center text-muted-foreground">
-            <span className="text-4xl">📦</span>
+          <div className="h-full flex flex-col items-center justify-center text-muted-foreground/40 gap-2">
+            <Package className="h-12 w-12" />
+            <span className="text-xs">Sin imagen</span>
           </div>
         )}
 
         {product.stock === 0 && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <Badge variant="destructive">Sin stock</Badge>
+          <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px] flex items-center justify-center">
+            <Badge variant="destructive" className="font-semibold">Sin stock</Badge>
           </div>
         )}
       </div>
@@ -73,23 +77,23 @@ export default function ProductCard({ product }: ProductCardProps) {
       {/* Info */}
       <div className="p-4">
         {product.category && (
-          <Badge variant="secondary" className="mb-2 text-xs">
+          <Badge variant="secondary" className="mb-2 text-xs font-medium px-2 py-0.5">
             {product.category.name}
           </Badge>
         )}
 
-        <h3 className="font-medium text-foreground mb-1 line-clamp-2">
+        <h3 className="font-semibold text-foreground mb-1 line-clamp-2 leading-snug">
           {product.name}
         </h3>
 
         {product.description && (
-          <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+          <p className="text-sm text-muted-foreground mb-3 line-clamp-2 leading-relaxed">
             {product.description}
           </p>
         )}
 
-        <div className="flex items-center justify-between mt-auto">
-          <span className="font-bold text-lg text-foreground">
+        <div className="flex items-center justify-between mt-auto pt-1">
+          <span className="font-bold text-lg text-primary tracking-tight">
             {formattedPrice}
           </span>
 
@@ -98,8 +102,9 @@ export default function ProductCard({ product }: ProductCardProps) {
             onClick={handleAddToCart}
             disabled={product.stock === 0}
             aria-label={`Agregar ${product.name} al carrito`}
+            className="font-medium gap-1.5"
           >
-            <ShoppingCart className="h-4 w-4 mr-1" />
+            <ShoppingCart className="h-3.5 w-3.5" />
             Agregar
           </Button>
         </div>

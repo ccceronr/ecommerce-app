@@ -55,9 +55,9 @@ function LoginForm() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Iniciar sesión</CardTitle>
+    <Card className="shadow-lg border-t-2 border-t-primary">
+      <CardHeader className="space-y-1 pb-4">
+        <CardTitle className="text-2xl">Iniciar sesión</CardTitle>
         <CardDescription>
           Ingresa tus credenciales para acceder a tu cuenta
         </CardDescription>
@@ -106,21 +106,26 @@ function LoginForm() {
             )}
           </div>
 
-          <Button type="submit" className="w-full" disabled={isLoading}>
-            {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+          <Button type="submit" className="w-full font-semibold" size="lg" disabled={isLoading}>
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                Iniciando sesión...
+              </span>
+            ) : 'Iniciar sesión'}
           </Button>
 
           <div className="text-center">
-            <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+            <Link href="/forgot-password" className="text-sm text-primary hover:text-primary/80 transition-colors hover:underline">
               ¿Olvidaste tu contraseña?
             </Link>
           </div>
         </form>
       </CardContent>
-      <CardFooter className="justify-center">
+      <CardFooter className="justify-center pt-2 pb-6">
         <p className="text-sm text-muted-foreground">
           ¿No tienes cuenta?{' '}
-          <Link href="/register" className="text-primary hover:underline">
+          <Link href="/register" className="text-primary font-medium hover:underline transition-colors">
             Regístrate
           </Link>
         </p>
@@ -131,7 +136,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<div className="w-full max-w-md animate-pulse bg-muted rounded-lg h-96" />}>
+    <Suspense fallback={<div className="w-full animate-pulse bg-muted rounded-xl h-96" />}>
       <LoginForm />
     </Suspense>
   )

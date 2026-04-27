@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect, notFound } from 'next/navigation'
 import Link from 'next/link'
+import { ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import ProductForm from '@/components/admin/ProductForm'
 
@@ -31,12 +32,15 @@ export default async function EditProductPage({
     <div>
       <div className="flex items-center gap-4 mb-8">
         <Link href="/admin/products">
-          <Button variant="outline" size="sm">← Volver</Button>
+          <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground hover:text-foreground">
+            <ArrowLeft className="h-4 w-4" />
+            Volver
+          </Button>
         </Link>
-        <h1 className="text-3xl font-bold text-gray-900">Editar producto</h1>
+        <h1 className="text-3xl font-bold text-foreground">Editar producto</h1>
       </div>
 
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="bg-card rounded-xl border border-border p-6">
         <ProductForm categories={categories} product={product} />
       </div>
     </div>

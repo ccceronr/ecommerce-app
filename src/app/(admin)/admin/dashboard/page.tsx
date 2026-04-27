@@ -1,5 +1,17 @@
 import { createClient } from '@/lib/supabase/server'
-import { Users, Package, ShoppingBag, DollarSign } from 'lucide-react'
+import { Users, Package, ShoppingBag, TrendingUp } from 'lucide-react'
+
+const statusStyles = {
+  pending: 'bg-amber-50 text-amber-700 border border-amber-200/80 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/50',
+  paid: 'bg-emerald-50 text-emerald-700 border border-emerald-200/80 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/50',
+  cancelled: 'bg-red-50 text-red-700 border border-red-200/80 dark:bg-red-900/20 dark:text-red-400 dark:border-red-800/50',
+}
+
+const statusLabels = {
+  pending: 'Pendiente',
+  paid: 'Pagado',
+  cancelled: 'Cancelado',
+}
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -27,62 +39,69 @@ export default async function DashboardPage() {
 
   const metrics = [
     {
-      label: 'Usuarios',
-      value: totalUsers || 0,
-      icon: Users,
-      color: 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
-    },
-    {
-      label: 'Productos',
-      value: totalProducts || 0,
-      icon: Package,
-      color: 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400',
+      label: 'Ingresos',
+      value: formattedPrice(totalRevenue),
+      icon: TrendingUp,
+      iconBg: 'bg-primary/15 text-primary',
+      note: 'órdenes pagadas',
     },
     {
       label: 'Órdenes',
       value: totalOrders || 0,
       icon: ShoppingBag,
-      color: 'bg-purple-100 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
+      iconBg: 'bg-violet-100 text-violet-600 dark:bg-violet-900/30 dark:text-violet-400',
+      note: 'en total',
     },
     {
-      label: 'Ingresos',
-      value: formattedPrice(totalRevenue),
-      icon: DollarSign,
-      color: 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400',
+      label: 'Productos',
+      value: totalProducts || 0,
+      icon: Package,
+      iconBg: 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400',
+      note: 'en catálogo',
+    },
+    {
+      label: 'Usuarios',
+      value: totalUsers || 0,
+      icon: Users,
+      iconBg: 'bg-sky-100 text-sky-600 dark:bg-sky-900/30 dark:text-sky-400',
+      note: 'registrados',
     },
   ]
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
-      <p className="text-muted-foreground mb-8">Resumen general de tu tienda</p>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-foreground mb-1">Dashboard</h1>
+        <p className="text-muted-foreground">Resumen general de tu tienda</p>
+      </div>
 
       {/* Métricas */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
         {metrics.map((metric) => {
           const Icon = metric.icon
           return (
             <div
               key={metric.label}
-              className="bg-card rounded-lg border border-border p-6"
+              className="bg-card rounded-xl border border-border p-5 hover:shadow-md hover:shadow-primary/8 hover:-translate-y-0.5 transition-all duration-200 cursor-default"
             >
               <div className="flex items-center justify-between mb-4">
                 <p className="text-sm font-medium text-muted-foreground">
                   {metric.label}
                 </p>
-                <div className={`p-2 rounded-md ${metric.color}`}>
+                <div className={`p-2.5 rounded-lg ${metric.iconBg}`}>
                   <Icon className="h-4 w-4" />
                 </div>
               </div>
               <p className="text-2xl font-bold text-foreground">{metric.value}</p>
+              <p className="text-xs text-muted-foreground mt-1">{metric.note}</p>
             </div>
           )
         })}
       </div>
 
       {/* Órdenes recientes */}
-      <div className="bg-card rounded-lg border border-border p-6">
-        <h2 className="text-lg font-bold text-foreground mb-4">
+      <div className="bg-card rounded-xl border border-border p-6">
+        <h2 className="text-lg font-bold text-foreground mb-5">
           Órdenes recientes
         </h2>
         <RecentOrders />
@@ -107,18 +126,6 @@ async function RecentOrders() {
       minimumFractionDigits: 0,
     }).format(price)
 
-  const statusColors = {
-    pending: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-    paid: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-    cancelled: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-  }
-
-  const statusLabels = {
-    pending: 'Pendiente',
-    paid: 'Pagado',
-    cancelled: 'Cancelado',
-  }
-
   if (!orders || orders.length === 0) {
     return <p className="text-muted-foreground text-sm">No hay órdenes aún</p>
   }
@@ -137,18 +144,18 @@ async function RecentOrders() {
         </thead>
         <tbody>
           {orders.map((order: any) => (
-            <tr key={order.id} className="border-b border-border hover:bg-muted/50">
-              <td className="py-3 px-4 font-mono text-foreground">
+            <tr key={order.id} className="border-b border-border last:border-0 hover:bg-muted/40 transition-colors">
+              <td className="py-3 px-4 font-mono text-foreground font-medium">
                 #{order.id.slice(0, 8).toUpperCase()}
               </td>
               <td className="py-3 px-4 text-foreground">
                 {order.profiles?.full_name || 'Usuario'}
               </td>
-              <td className="py-3 px-4 font-medium text-foreground">
+              <td className="py-3 px-4 font-semibold text-foreground">
                 {formattedPrice(order.total)}
               </td>
               <td className="py-3 px-4">
-                <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[order.status as keyof typeof statusColors]}`}>
+                <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${statusStyles[order.status as keyof typeof statusStyles]}`}>
                   {statusLabels[order.status as keyof typeof statusLabels]}
                 </span>
               </td>

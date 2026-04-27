@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { ShoppingCart, User, LogOut, LayoutDashboard } from 'lucide-react'
+import { ShoppingCart, User, LogOut, LayoutDashboard, ShoppingBag } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useUser } from '@/hooks/useUser'
 import { useCart } from '@/hooks/useCart'
@@ -37,26 +37,29 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="border-b bg-background sticky top-0 z-50">
+    <nav className="border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm shadow-border/40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo */}
-          <Link href="/" className="font-bold text-xl text-foreground hover:text-muted-foreground transition-colors">
-            Ecommerce App
+          <Link
+            href="/"
+            className="font-heading font-bold text-xl tracking-tight text-foreground hover:text-primary transition-colors"
+          >
+            Ecommerce <span className="text-primary">App</span>
           </Link>
 
           {/* Acciones */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
 
             <ThemeToggle />
 
-            {/* Carrito — siempre visible, solo uno */}
+            {/* Carrito */}
             <Link href="/cart">
-              <Button variant="ghost" size="icon" aria-label="Carrito" className="relative">
+              <Button variant="ghost" size="icon" aria-label="Carrito" className="relative hover:bg-primary/10 hover:text-primary transition-colors">
                 <ShoppingCart className="h-5 w-5" />
                 {hasHydrated && totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-semibold rounded-full h-4 w-4 flex items-center justify-center leading-none">
                     {totalItems > 9 ? '9+' : totalItems}
                   </span>
                 )}
@@ -65,30 +68,31 @@ export default function Navbar() {
 
             {/* Usuario */}
             {isLoading ? (
-              <div className="w-8 h-8 rounded-full bg-muted animate-pulse" />
+              <div className="w-9 h-9 rounded-full bg-muted animate-pulse" />
             ) : user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-accent text-foreground"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-primary/10 hover:text-primary text-foreground transition-colors"
                   aria-label="Menú de usuario"
                 >
                   <User className="h-5 w-5" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <div className="px-2 py-1.5">
-                    <p className="text-sm font-medium truncate">
+                <DropdownMenuContent align="end" className="w-52">
+                  <div className="px-3 py-2">
+                    <p className="text-sm font-semibold truncate">
                       {profile?.full_name || 'Usuario'}
                     </p>
                     <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                   </div>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => router.push('/orders')}>
+                  <DropdownMenuItem onClick={() => router.push('/orders')} className="cursor-pointer">
+                    <ShoppingBag className="h-4 w-4 mr-2" />
                     Mis órdenes
                   </DropdownMenuItem>
                   {isAdmin && (
                     <>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => router.push('/admin/dashboard')}>
+                      <DropdownMenuItem onClick={() => router.push('/admin/dashboard')} className="cursor-pointer">
                         <LayoutDashboard className="h-4 w-4 mr-2" />
                         Panel admin
                       </DropdownMenuItem>
@@ -107,10 +111,10 @@ export default function Navbar() {
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/login">
-                  <Button variant="ghost" size="sm">Iniciar sesión</Button>
+                  <Button variant="ghost" size="sm" className="font-medium">Iniciar sesión</Button>
                 </Link>
                 <Link href="/register">
-                  <Button size="sm">Registrarse</Button>
+                  <Button size="sm" className="font-medium">Registrarse</Button>
                 </Link>
               </div>
             )}

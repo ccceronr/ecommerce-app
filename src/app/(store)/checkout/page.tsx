@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTheme } from 'next-themes'
+import { ShieldCheck } from 'lucide-react'
 import { loadStripe } from '@stripe/stripe-js'
 import {
   Elements,
@@ -62,11 +63,21 @@ function CheckoutForm({ orderId }: { orderId: string }) {
       <PaymentElement />
       <Button
         type="submit"
-        className="w-full"
+        className="w-full font-semibold gap-2"
         size="lg"
         disabled={!stripe || !elements || isLoading}
       >
-        {isLoading ? 'Procesando pago...' : 'Pagar ahora'}
+        {isLoading ? (
+          <span className="flex items-center gap-2">
+            <span className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+            Procesando pago...
+          </span>
+        ) : (
+          <>
+            <ShieldCheck className="h-4 w-4" />
+            Pagar ahora
+          </>
+        )}
       </Button>
       <p className="text-xs text-center text-muted-foreground">
         Pago seguro procesado por Stripe. Usa la tarjeta de prueba: 4242 4242 4242 4242
@@ -138,10 +149,10 @@ export default function CheckoutPage() {
 
   if (userLoading || isCreatingOrder) {
     return (
-      <div className="flex items-center justify-center py-20">
+      <div className="flex items-center justify-center py-24">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-border border-t-foreground rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Preparando tu orden...</p>
+          <div className="w-10 h-10 border-2 border-primary/20 border-t-primary rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground font-medium">Preparando tu orden...</p>
         </div>
       </div>
     )
@@ -155,7 +166,7 @@ export default function CheckoutPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Formulario de pago */}
-        <div className="bg-card rounded-lg border border-border p-6">
+        <div className="bg-card rounded-xl border border-border p-6">
           <h2 className="text-lg font-bold text-foreground mb-6">Información de pago</h2>
           <Elements
             stripe={stripePromise}
@@ -171,14 +182,14 @@ export default function CheckoutPage() {
         </div>
 
         {/* Resumen del pedido */}
-        <div className="bg-card rounded-lg border border-border p-6 h-fit">
-          <h2 className="text-lg font-bold text-foreground mb-4">Resumen del pedido</h2>
+        <div className="bg-card rounded-xl border border-border p-6 h-fit sticky top-24">
+          <h2 className="text-lg font-bold text-foreground mb-5">Resumen del pedido</h2>
 
-          <div className="space-y-3 mb-4">
+          <div className="space-y-3 mb-5">
             {items.map((item) => (
               <div key={item.product_id} className="flex justify-between text-sm">
                 <span className="text-muted-foreground">
-                  {item.name} x{item.quantity}
+                  {item.name} ×{item.quantity}
                 </span>
                 <span className="font-medium text-foreground">
                   {formattedPrice(item.price * item.quantity)}
@@ -187,22 +198,24 @@ export default function CheckoutPage() {
             ))}
           </div>
 
-          <Separator className="my-4" />
+          <Separator className="mb-4" />
 
-          <div className="flex justify-between text-sm mb-2">
-            <span className="text-muted-foreground">Subtotal ({totalItems()} items)</span>
-            <span className="text-foreground">{formattedPrice(totalPrice())}</span>
-          </div>
-          <div className="flex justify-between text-sm mb-4">
-            <span className="text-muted-foreground">Envío</span>
-            <span className="text-green-600 dark:text-green-400">Gratis</span>
+          <div className="space-y-2.5 mb-5 text-sm">
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Subtotal ({totalItems()} productos)</span>
+              <span className="font-medium text-foreground">{formattedPrice(totalPrice())}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-muted-foreground">Envío</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-medium">Gratis</span>
+            </div>
           </div>
 
-          <Separator className="my-4" />
+          <Separator className="mb-4" />
 
           <div className="flex justify-between font-bold text-lg text-foreground">
             <span>Total</span>
-            <span>{formattedPrice(totalPrice())}</span>
+            <span className="text-primary">{formattedPrice(totalPrice())}</span>
           </div>
         </div>
       </div>

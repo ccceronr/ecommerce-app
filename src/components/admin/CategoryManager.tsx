@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Pencil, Trash2, Plus, Check, X } from 'lucide-react'
+import { Pencil, Trash2, Plus, Check, X, Tag } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -57,7 +57,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
     name
       .toLowerCase()
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[̀-ͯ]/g, '')
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '')
 
@@ -151,9 +151,9 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Formulario de nueva categoría */}
-      <div className="bg-card rounded-lg border border-border p-6">
-        <h2 className="text-lg font-bold text-foreground mb-4">Nueva categoría</h2>
+      {/* Formulario nueva categoría */}
+      <div className="bg-card rounded-xl border border-border p-6">
+        <h2 className="text-lg font-bold text-foreground mb-5">Nueva categoría</h2>
         <form onSubmit={handleSubmit(handleCreate)} className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="name">Nombre</Label>
@@ -164,30 +164,33 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
               {...register('name')}
             />
             {errors.name && (
-              <p className="text-sm text-red-500">{errors.name.message}</p>
+              <p className="text-sm text-destructive">{errors.name.message}</p>
             )}
           </div>
-          <Button type="submit" disabled={isLoading}>
-            <Plus className="h-4 w-4 mr-2" />
+          <Button type="submit" disabled={isLoading} className="gap-2 font-medium">
+            <Plus className="h-4 w-4" />
             {isLoading ? 'Creando...' : 'Crear categoría'}
           </Button>
         </form>
       </div>
 
       {/* Lista de categorías */}
-      <div className="bg-card rounded-lg border border-border p-6">
-        <h2 className="text-lg font-bold text-foreground mb-4">
+      <div className="bg-card rounded-xl border border-border p-6">
+        <h2 className="text-lg font-bold text-foreground mb-5">
           Categorías existentes
         </h2>
 
         {categories.length === 0 ? (
-          <p className="text-muted-foreground text-sm">No hay categorías aún</p>
+          <div className="text-center py-8">
+            <Tag className="h-8 w-8 text-muted-foreground/40 mx-auto mb-2" />
+            <p className="text-muted-foreground text-sm">No hay categorías aún</p>
+          </div>
         ) : (
           <div className="space-y-2">
             {categories.map((cat) => (
               <div
                 key={cat.id}
-                className="flex items-center justify-between p-3 bg-muted/50 rounded-md"
+                className="flex items-center justify-between p-3 bg-muted/40 rounded-lg hover:bg-muted/60 transition-colors"
               >
                 {editingId === cat.id ? (
                   <div className="flex items-center gap-2 flex-1">
@@ -200,7 +203,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                     />
                     <Button
                       size="icon"
-                      className="h-8 w-8"
+                      className="h-8 w-8 shrink-0"
                       onClick={() => handleEdit(cat.id)}
                       disabled={isLoading}
                     >
@@ -209,7 +212,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                     <Button
                       size="icon"
                       variant="outline"
-                      className="h-8 w-8"
+                      className="h-8 w-8 shrink-0"
                       onClick={() => setEditingId(null)}
                       disabled={isLoading}
                     >
@@ -219,14 +222,14 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                 ) : (
                   <>
                     <div>
-                      <p className="text-sm font-medium text-foreground">{cat.name}</p>
-                      <p className="text-xs text-muted-foreground">{cat.slug}</p>
+                      <p className="text-sm font-semibold text-foreground">{cat.name}</p>
+                      <p className="text-xs text-muted-foreground font-mono">{cat.slug}</p>
                     </div>
                     <div className="flex items-center gap-1">
                       <Button
                         size="icon"
                         variant="ghost"
-                        className="h-8 w-8"
+                        className="h-8 w-8 text-muted-foreground hover:text-foreground"
                         onClick={() => {
                           setEditingId(cat.id)
                           setEditingName(cat.name)
@@ -239,7 +242,7 @@ export default function CategoryManager({ initialCategories }: CategoryManagerPr
                         if (!open) setDeleteId(null)
                       }}>
                         <DialogTrigger
-                          className="inline-flex items-center justify-center h-8 w-8 rounded-md text-destructive hover:text-destructive hover:bg-accent"
+                          className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
                           onClick={() => {
                             setDeleteId(cat.id)
                             setDeleteOpen(true)
